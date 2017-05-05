@@ -5,9 +5,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.Remoting.Contexts;
 using CustomCodeGenerator.Helpers;
+using CustomCodeGenerator.Templates;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.PlatformUI;
@@ -96,12 +100,46 @@ namespace CustomCodeGenerator.Commands.AddMapperClass
             //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             //Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
 
-            var model = new AddMapperViewModel(Dte.GetActiveProject());
+            var activeProject = Dte.GetActiveProject();
+            var model = new AddMapperViewModel(activeProject);
+
             AddMapperWindow window = new AddMapperWindow(model);
             bool? result = window.ShowDialog();
             if (result.HasValue && result == true)
             {
                 // generate code here
+                var rootNamespace = activeProject.GetRootNamespace();
+                var folderName = "Mapper";
+                var namespaceName = rootNamespace + "." + folderName;
+                var className =
+                    $"{model.SelectedSourceModelType.ShortTypeName}To{model.SelectedDestinationModelType.ShortTypeName}Mapper";
+                var session = new Dictionary<string, object>()
+                {
+                    { "Namespace", namespaceName },
+                    { "ClassName", className },
+                    { "Source", model.SelectedSourceModelType.CodeType },
+                    { "Destination", model.SelectedDestinationModelType.CodeType}
+                };
+
+                var template = new MapperClassTemplate();
+                template.Session = session;
+                template.Initialize();
+                var generatedCode = template.TransformText();
+
+                var rootFolder = activeProject.GetRootFolder(Dte);
+                var outputFolder = Path.Combine(rootFolder, folderName);
+                var outputFilePath = Path.Combine(outputFolder, className + ".cs");
+                if (Directory.Exists(outputFolder) == false)
+                {
+                    Directory.CreateDirectory(outputFolder);
+                    activeProject.AddDirectoryToProject(Dte, outputFolder);
+                }
+                if (File.Exists(outputFilePath))
+                {
+                    File.Delete(outputFilePath);
+                }
+                File.WriteAllText(outputFilePath, generatedCode);
+                activeProject.AddFileToProject(Dte, outputFilePath);
             }
         }
     }

@@ -1,0 +1,56 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="EnvDTE" #>
+<#@ parameter name="Namespace" type="System.String" #>
+<#@ parameter name="ClassName" type="System.String" #>
+<#@ parameter name="Source" type="EnvDTE.CodeType" #>
+<#@ parameter name="Destination" type="EnvDTE.CodeType" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using <#= Source.Namespace.FullName #>;
+<#
+	if (Source.Namespace.FullName != Destination.Namespace.FullName)
+	{
+#>
+using <#= Destination.Namespace.FullName #>;
+<#
+	}
+#>
+
+namespace <#= Namespace #>
+{
+	public class <#= ClassName #>
+	{
+		public void Map(<#= Source.Name #> src, <#= Destination.Name #> des)
+		{
+		<#
+			foreach (CodeElement child in Destination.Children)
+			{
+				var exist = false;
+				foreach (CodeElement srcChild in Source.Children)
+				{
+					if (child.Name == srcChild.Name)
+					{
+						exist = true;
+		#>
+	des.<#= child.Name #> = src.<#= srcChild.Name #>;
+		<#
+					}
+				}
+				if (!exist)
+				{
+		#>
+			//des.<#= child.Name #> = ;
+		<#
+				}
+			}
+		#>
+}
+	}
+}
