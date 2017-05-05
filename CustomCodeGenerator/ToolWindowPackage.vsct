@@ -26,7 +26,7 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidToolWindowPackageCmdSet" id="ToolWindowCommandId" priority="0x0200" type="Button">
+      <Button guid="guidToolWindowPackageCmdSet" id="AddMapperClassCommandId" priority="0x0200" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_ADD_ITEMS"/>
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -49,7 +49,7 @@
   </Commands>
     
   <KeyBindings>
-    <KeyBinding guid="guidToolWindowPackageCmdSet" id="ToolWindowCommandId" mod1="Shift" key1="VK_F2" editor="guidVSStd97"/>
+    <KeyBinding guid="guidToolWindowPackageCmdSet" id="AddMapperClassCommandId" mod1="Shift" key1="VK_F2" editor="guidVSStd97"/>
   </KeyBindings>
 
   <Symbols>
@@ -58,7 +58,7 @@
 
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidToolWindowPackageCmdSet" value="{6b017566-555a-4430-96a9-da4182e0b2ab}">
-      <IDSymbol name="ToolWindowCommandId" value="0x0100" />
+      <IDSymbol name="AddMapperClassCommandId" value="0x0100" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{09247d05-a27b-420f-b583-e42ea4d42134}" >

@@ -1,0 +1,26 @@
+﻿<Window x:Class="CustomCodeGenerator.Commands.AddMapperClass.AddMapperWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="600" Height="180" Title="Add Mapper Class" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Width" Loaded="Window_Loaded">
+    <Grid Margin="0,0,-6,-29" Width="600">
+        <ComboBox HorizontalAlignment="Left"
+            Margin="182,29,0,0"
+            VerticalAlignment="Top"
+            ItemsSource="{Binding SourceModelTypes}"
+            DisplayMemberPath="DisplayName"
+            SelectedItem="{Binding SelectedSourceModelType, Mode=OneWayToSource}"
+            Width="400"/>
+        <Label Content="Source Model:" Margin="78,27,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14"/>
+        <ComboBox HorizontalAlignment="Left"
+            Margin="182,58,0,0"
+            VerticalAlignment="Top"
+            ItemsSource="{Binding DestinationModelTypes}"
+            DisplayMemberPath="DisplayName"
+            SelectedItem="{Binding SelectedDestinationModelType, Mode=OneWayToSource}"
+            Width="400"/>
+        <Label Content="Destination Model:" Margin="50,56,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14"/>
+        <Button Content="Add" IsDefault="True" HorizontalAlignment="Left" Margin="182,100,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="-0.187,0.75" Click="Button_Click" FontSize="14"/>
+        <Button Content="Cancel" IsCancel="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="347,100,0,0" FontSize="14" RenderTransformOrigin="2.52,0.565"/>
+
+    </Grid>
+</Window>
